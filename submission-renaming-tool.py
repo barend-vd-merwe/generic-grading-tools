@@ -150,10 +150,13 @@ with st.expander("Instructions", expanded = False):
     """)
 
 with st.sidebar:
-    uploaded_files = st.file_uploader("Select the student submission",
+    uploaded_files = st.file_uploader("Load the submissions",
                          type = ["png"],
                          accept_multiple_files = True,
                          key = str(st.session_state["uploader_key"]))
+    class_list = st.file_uploader("Load the class list",
+                         type = ["csv"],
+                         key = "class_list")
 
     st.button("Clear", on_click = clear_files)
 
@@ -190,7 +193,7 @@ if uploaded_files:
     with col2:
         snumber = st.text_input("Student Number", key="emplid")
         if st.button("Load Details"):
-            df = pd.read_csv("class-list.csv", encoding = "latin1")
+            df = pd.read_csv(class_list, encoding = "latin1")
             surname, name = df.loc[df["emplid"] == snumber, ["surname", "name"]].iloc[0]
             sname = st.text_input("Surname", value=surname, key="surname_field")
             fname = st.text_input("Initials", value=name, key="name_field")
